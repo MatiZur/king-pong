@@ -2,31 +2,78 @@ package gui;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.Timer;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class pelota extends JPanel {
 
     private static final long serialVersionUID = 1L;
 
-    private int velX = 3;
-    private int velY = 3;
+    private int velX;
+    private int velY;
+
+    private final int VELOCIDAD_INICIAL = 3;
+    private final int MAX_VELOCIDAD = 10;
 
     private JLabel raquetaIzq;
     private JLabel raquetaDer;
 
+    private Image imagenPelota;
+
+    private Timer aumentoVelocidadTimer;
+
     public pelota(int x, int y, JLabel raquetaIzq, JLabel raquetaDer) {
         setBounds(x, y, 20, 20);
-        setBackground(new Color(0, 0, 0, 0)); // transparente
+        setOpaque(false);
+        setBackground(new Color(0, 0, 0, 0));
         this.raquetaIzq = raquetaIzq;
         this.raquetaDer = raquetaDer;
+
+        velX = VELOCIDAD_INICIAL;
+        velY = VELOCIDAD_INICIAL;
+
+        try {
+            imagenPelota = ImageIO.read(new File("media/PELOTA.png"));
+        } catch (IOException e) {
+            System.out.println("Error: No se pudo cargar la imagen PELOTA.png. Revisa que el archivo exista en la carpeta media.");
+        }
+
+        aumentoVelocidadTimer = new Timer(5000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                aumentarVelocidad();
+            }
+        });
+        aumentoVelocidadTimer.start();
+    }
+
+    private void aumentarVelocidad() {
+        if (Math.abs(velX) < MAX_VELOCIDAD) {
+            velX += (velX > 0) ? 1 : -1;
+        }
+        if (Math.abs(velY) < MAX_VELOCIDAD) {
+            velY += (velY > 0) ? 1 : -1;
+        }
+        System.out.println("Velocidad aumentada a: velX=" + velX + ", velY=" + velY);
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.setColor(Color.WHITE);
-        g.fillOval(0, 0, getWidth(), getHeight());
+
+        if (imagenPelota != null) {
+            g.drawImage(imagenPelota, 0, 0, getWidth(), getHeight(), this);
+        } else {
+            g.setColor(Color.WHITE);
+            g.fillOval(0, 0, getWidth(), getHeight());
+        }
     }
 
     public void iniciarMovimiento() {
@@ -46,12 +93,14 @@ public class pelota extends JPanel {
 
         if (getX() <= 0) {
             resetPelota();
-            velX = Math.abs(velX);
+            velX = VELOCIDAD_INICIAL; 
+            velY = VELOCIDAD_INICIAL; 
         }
 
         if (getX() >= getParent().getWidth() - getWidth()) {
             resetPelota();
-            velX = -Math.abs(velX);
+            velX = -VELOCIDAD_INICIAL; 
+            velY = VELOCIDAD_INICIAL; 
         }
     }
 
@@ -61,3 +110,4 @@ public class pelota extends JPanel {
         setLocation(centroX, centroY);
     }
 }
+

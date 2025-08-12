@@ -76,7 +76,7 @@ public class ventanaPong extends JFrame {
         g2d.dispose();
         // Raqueta derecha 
         raquetaDer = new JLabel(new ImageIcon(invertida));
-        raquetaDer.setBounds(1000, 250, spriteRaqueta.getIconWidth(), spriteRaqueta.getIconHeight());
+        raquetaDer.setBounds(1100, 250, spriteRaqueta.getIconWidth(), spriteRaqueta.getIconHeight());
         contentPane.add(raquetaDer);
 
         // Pelota
