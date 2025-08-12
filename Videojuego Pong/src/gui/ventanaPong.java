@@ -22,10 +22,14 @@ public class ventanaPong extends JFrame {
     private pelota bocha;
 
     private JPanel contentPane;
+    private int WIDTH=794;
+    private int HEIGHT=545;
 
     public JPanel raquetaIzq;
     public JPanel raquetaDer;
-
+    
+    
+    
     private final int velRaqueta = 10;
 
     public ventanaPong() {
@@ -39,16 +43,19 @@ public class ventanaPong extends JFrame {
 
         raquetaIzq = new JPanel();
         raquetaIzq.setBackground(Color.WHITE);
-        raquetaIzq.setBounds(30, 200, 15, 100);
+        raquetaIzq.setBounds(30, 222, 15, 100);
         contentPane.add(raquetaIzq);
 
         raquetaDer = new JPanel();
         raquetaDer.setBackground(Color.WHITE);
-        raquetaDer.setBounds(760, 200, 15, 100);
+        raquetaDer.setBounds(749, 222, 15, 100);
         contentPane.add(raquetaDer);
-
+        
+        int xPelota=(WIDTH / 2 - pelota.WIDTH /2);
+        int yPelota=(HEIGHT / 2 - pelota.HEIGHT / 2);
+        
         //para detectar las colisiones
-        bocha = new pelota(393, 260, raquetaIzq, raquetaDer);
+        bocha = new pelota(xPelota, yPelota, raquetaIzq, raquetaDer);
         bocha.setBackground(new Color(0, 0, 0));
         contentPane.add(bocha);
 

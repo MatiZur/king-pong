@@ -12,6 +12,8 @@ public class pelota extends JPanel {
     public int x, y;
     public int movX = 1, movY = 1;
     public int aceleracion = 15;
+    public static int WIDTH=24;
+    public static int HEIGHT=24;
     private static final long serialVersionUID = 1L;
 
     // Referencias a las raquetas para colisión
@@ -26,7 +28,7 @@ public class pelota extends JPanel {
         this.y = startY;
         this.raquetaIzq = raquetaIzq;
         this.raquetaDer = raquetaDer;
-        setBounds(x, y, 24, 24);
+        setBounds(startX, startY, 24, 24);
     }
 
     @Override
