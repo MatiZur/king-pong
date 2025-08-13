@@ -1,16 +1,11 @@
 package gui;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Image;
+import java.awt.*;
+import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.Timer;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import javax.swing.*;
 
 public class pelota extends JPanel {
 
@@ -24,17 +19,18 @@ public class pelota extends JPanel {
 
     private JLabel raquetaIzq;
     private JLabel raquetaDer;
+    private ventanaPong ventana;
 
     private Image imagenPelota;
-
     private Timer aumentoVelocidadTimer;
 
-    public pelota(int x, int y, JLabel raquetaIzq, JLabel raquetaDer) {
+    public pelota(int x, int y, JLabel raquetaIzq, JLabel raquetaDer, ventanaPong ventana) {
         setBounds(x, y, 20, 20);
         setOpaque(false);
         setBackground(new Color(0, 0, 0, 0));
         this.raquetaIzq = raquetaIzq;
         this.raquetaDer = raquetaDer;
+        this.ventana = ventana;
 
         velX = VELOCIDAD_INICIAL;
         velY = VELOCIDAD_INICIAL;
@@ -42,34 +38,23 @@ public class pelota extends JPanel {
         try {
             imagenPelota = ImageIO.read(new File("media/PELOTA.png"));
         } catch (IOException e) {
-            System.out.println("Error: No se pudo cargar la imagen PELOTA.png. Revisa que el archivo exista en la carpeta media.");
+            System.out.println("Error: No se pudo cargar la imagen PELOTA.png.");
         }
 
-        aumentoVelocidadTimer = new Timer(5000, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                aumentarVelocidad();
-            }
-        });
+        aumentoVelocidadTimer = new Timer(5000, e -> aumentarVelocidad());
         aumentoVelocidadTimer.start();
     }
 
     private void aumentarVelocidad() {
-        if (Math.abs(velX) < MAX_VELOCIDAD) {
-            velX += (velX > 0) ? 1 : -1;
-        }
-        if (Math.abs(velY) < MAX_VELOCIDAD) {
-            velY += (velY > 0) ? 1 : -1;
-        }
+        if (Math.abs(velX) < MAX_VELOCIDAD) velX += (velX > 0) ? 1 : -1;
+        if (Math.abs(velY) < MAX_VELOCIDAD) velY += (velY > 0) ? 1 : -1;
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-
-        if (imagenPelota != null) {
-            g.drawImage(imagenPelota, 0, 0, getWidth(), getHeight(), this);
-        } else {
+        if (imagenPelota != null) g.drawImage(imagenPelota, 0, 0, getWidth(), getHeight(), this);
+        else {
             g.setColor(Color.WHITE);
             g.fillOval(0, 0, getWidth(), getHeight());
         }
@@ -78,30 +63,24 @@ public class pelota extends JPanel {
     public void iniciarMovimiento() {
         setLocation(getX() + velX, getY() + velY);
 
-        if (getY() <= 232 || getY() >= 688) {
-            velY = -velY;
-        }
+        if (getY() <= 232 || getY() >= 688) velY = -velY;
 
-        if (getBounds().intersects(raquetaIzq.getBounds())) {
-        	System.out.println(getX());
-            velX = Math.abs(velX);
-        }
+        if (getBounds().intersects(raquetaIzq.getBounds())) velX = Math.abs(velX);
+        if (getBounds().intersects(raquetaDer.getBounds())) velX = -Math.abs(velX);
 
-        if (getBounds().intersects(raquetaDer.getBounds())) {
-            velX = -Math.abs(velX);
-            System.out.println(getX());
-        }
-
+        // Puntos
         if (getX() <= 0) {
+            ventana.sumarPuntoDer();
             resetPelota();
-            velX = VELOCIDAD_INICIAL; 
-            velY = VELOCIDAD_INICIAL; 
+            velX = VELOCIDAD_INICIAL;
+            velY = VELOCIDAD_INICIAL;
         }
 
         if (getX() >= getParent().getWidth() - getWidth()) {
+            ventana.sumarPuntoIzq();
             resetPelota();
-            velX = -VELOCIDAD_INICIAL; 
-            velY = VELOCIDAD_INICIAL; 
+            velX = -VELOCIDAD_INICIAL;
+            velY = VELOCIDAD_INICIAL;
         }
     }
 
