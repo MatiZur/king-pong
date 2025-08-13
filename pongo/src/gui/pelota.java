@@ -42,7 +42,6 @@ public class pelota extends JPanel {
         try {
             imagenPelota = ImageIO.read(new File("media/PELOTA.png"));
         } catch (IOException e) {
-            System.out.println("Error: No se pudo cargar la imagen PELOTA.png. Revisa que el archivo exista en la carpeta media.");
         }
 
         aumentoVelocidadTimer = new Timer(5000, new ActionListener() {
@@ -61,7 +60,6 @@ public class pelota extends JPanel {
         if (Math.abs(velY) < MAX_VELOCIDAD) {
             velY += (velY > 0) ? 1 : -1;
         }
-        System.out.println("Velocidad aumentada a: velX=" + velX + ", velY=" + velY);
     }
 
     @Override
