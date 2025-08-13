@@ -42,6 +42,7 @@ public class pelota extends JPanel {
         try {
             imagenPelota = ImageIO.read(new File("media/PELOTA.png"));
         } catch (IOException e) {
+            System.out.println("Error: No se pudo cargar la imagen PELOTA.png. Revisa que el archivo exista en la carpeta media.");
         }
 
         aumentoVelocidadTimer = new Timer(5000, new ActionListener() {
@@ -77,16 +78,18 @@ public class pelota extends JPanel {
     public void iniciarMovimiento() {
         setLocation(getX() + velX, getY() + velY);
 
-        if (getY() <= 0 || getY() >= getParent().getHeight() - getHeight()) {
+        if (getY() <= 232 || getY() >= 688) {
             velY = -velY;
         }
 
         if (getBounds().intersects(raquetaIzq.getBounds())) {
+        	System.out.println(getX());
             velX = Math.abs(velX);
         }
 
         if (getBounds().intersects(raquetaDer.getBounds())) {
             velX = -Math.abs(velX);
+            System.out.println(getX());
         }
 
         if (getX() <= 0) {
@@ -108,4 +111,3 @@ public class pelota extends JPanel {
         setLocation(centroX, centroY);
     }
 }
-

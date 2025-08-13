@@ -23,7 +23,7 @@ public class ventanaPong extends JFrame {
     public JLabel raquetaIzq;
     public JLabel raquetaDer;
 
-    private int velRaqueta = 10;
+    private final int velRaqueta = 10;
     private BufferedImage fondoImage;
     private ImageIcon spriteRaqueta;
 
@@ -55,8 +55,16 @@ public class ventanaPong extends JFrame {
 
         // Raqueta izquierda
         raquetaIzq = new JLabel(spriteRaqueta);
-        raquetaIzq.setBounds(400, 250, spriteRaqueta.getIconWidth(), spriteRaqueta.getIconHeight());
+        raquetaIzq.setBounds(158, 250, spriteRaqueta.getIconWidth(), spriteRaqueta.getIconHeight());
         contentPane.add(raquetaIzq);
+        
+        // x = 160 ; y = 232  ; width = 1190  ; height :  472
+        
+        JFrame cancha = new JFrame();
+        cancha.setBounds(160, 232, 1190, 456);
+        
+        
+        
         
         //invertir el sprite para la raqueta derecha
         Image img = spriteRaqueta.getImage();
@@ -76,11 +84,14 @@ public class ventanaPong extends JFrame {
         g2d.dispose();
         // Raqueta derecha 
         raquetaDer = new JLabel(new ImageIcon(invertida));
-        raquetaDer.setBounds(1150, 250, spriteRaqueta.getIconWidth(), spriteRaqueta.getIconHeight());
+        raquetaDer.setBounds(1165, 250, spriteRaqueta.getIconWidth(), spriteRaqueta.getIconHeight());
         contentPane.add(raquetaDer);
 
+        
         // Pelota
         bocha = new pelota(393, 260, raquetaIzq, raquetaDer);
+        bocha.setBackground(Color.BLACK);
+        bocha.setBounds(393, 260, 20, 20);
         contentPane.add(bocha);
 
         // Movimiento de la pelota con Timer
