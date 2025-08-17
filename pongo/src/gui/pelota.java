@@ -13,43 +13,41 @@ public class pelota extends JPanel {
 
     private int velX;
     private int velY;
+    private int XInicial;
+    private int YInicial;
 
-    private final int VELOCIDAD_INICIAL = 3;
-    private final int MAX_VELOCIDAD = 10;
+    public int VelInicial = 3;
+    public int VelMaxima = 12;
 
-    private JLabel raquetaIzq;
-    private JLabel raquetaDer;
+    private JLabel jugador1;
+    private JLabel jugador2;
     private ventanaPong ventana;
 
     private Image imagenPelota;
-    private Timer aumentoVelocidadTimer;
 
-    public pelota(int x, int y, JLabel raquetaIzq, JLabel raquetaDer, ventanaPong ventana) {
-        setBounds(x, y, 20, 20);
+
+    public pelota(int x, int y, JLabel jugador1, JLabel jugador2, ventanaPong ventana) {
+    	this.XInicial=x;
+    	this.YInicial=y;
+        setBounds(XInicial, YInicial, 20, 20);
         setOpaque(false);
         setBackground(new Color(0, 0, 0, 0));
-        this.raquetaIzq = raquetaIzq;
-        this.raquetaDer = raquetaDer;
+        this.jugador1 = jugador1;
+        this.jugador2 = jugador2;
         this.ventana = ventana;
 
-        velX = VELOCIDAD_INICIAL;
-        velY = VELOCIDAD_INICIAL;
+        velX = VelInicial;
+        velY = VelInicial;
 
         try {
-            imagenPelota = ImageIO.read(new File("media/PELOTA.png"));
+            imagenPelota = ImageIO.read(new File("media/PELOTA.png"));		// imagen de la pelota
         } catch (IOException e) {
             System.out.println("Error: No se pudo cargar la imagen PELOTA.png.");
         }
 
-        aumentoVelocidadTimer = new Timer(5000, e -> aumentarVelocidad());
-        aumentoVelocidadTimer.start();
     }
 
-    private void aumentarVelocidad() {
-        if (Math.abs(velX) < MAX_VELOCIDAD) velX += (velX > 0) ? 1 : -1;
-        if (Math.abs(velY) < MAX_VELOCIDAD) velY += (velY > 0) ? 1 : -1;
-    }
-
+    // funcion para cargar la imagen de la pelota
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -59,34 +57,53 @@ public class pelota extends JPanel {
             g.fillOval(0, 0, getWidth(), getHeight());
         }
     }
+    
+    // funcion para aumentar la velocidad respecto a las coordenadas X e Y
+    private void aumentarVelocidad() {
+        if (Math.abs(velX) < VelMaxima) velX += (velX > 0) ? 1 : -1;
+        if (Math.abs(velY) < VelMaxima) velY += (velY > 0) ? 1 : -1;
+    }
+    
+    // funcion para el movimiento de la pelota
+    public void movimiento() {
+        setLocation(getX() + velX, getY() + velY);	// para poner las coordenadas de la pelota
 
-    public void iniciarMovimiento() {
-        setLocation(getX() + velX, getY() + velY);
+        if (getY() <= 236 || getY() >= 715) velY = -velY;	// colisiones del eje Y de la pelota 
 
-        if (getY() <= 232 || getY() >= 688) velY = -velY;
-
-        if (getBounds().intersects(raquetaIzq.getBounds())) velX = Math.abs(velX);
-        if (getBounds().intersects(raquetaDer.getBounds())) velX = -Math.abs(velX);
-
-        // Puntos
+        if (getBounds().intersects(jugador1.getBounds())) 
+        { 
+        	velX = Math.abs(velX); 		// colision con el jugador 1
+        	velY = Math.abs(velY) * (Math.random() < 0.5 ? 1 : -1); 
+        	aumentarVelocidad();
+       	}	
+        if (getBounds().intersects(jugador2.getBounds())) 
+        {	
+        	velX = -Math.abs(velX);		// colision con el jugador 2
+        	velY = Math.abs(velY) * (Math.random() < 0.5 ? 1 : -1); 
+        	aumentarVelocidad();
+        }
+        // para que la pelota no se vaya del lado izquierdo de la ventana
         if (getX() <= 0) {
             ventana.sumarPuntoDer();
             resetPelota();
-            velX = VELOCIDAD_INICIAL;
-            velY = VELOCIDAD_INICIAL;
+            velX = -VelInicial;
+            velY = VelInicial;
         }
-
+        
+        // para que la pelota no se vaya del lado derecho de la ventana
         if (getX() >= getParent().getWidth() - getWidth()) {
+        	System.out.println(getX());
             ventana.sumarPuntoIzq();
             resetPelota();
-            velX = -VELOCIDAD_INICIAL;
-            velY = VELOCIDAD_INICIAL;
+            velX = VelInicial;
+            velY = VelInicial;
         }
     }
-
+    
+    // para resetear la pelota al lugar de origen
     private void resetPelota() {
-        int centroX = getParent().getWidth() / 2 - getWidth() / 2;
-        int centroY = getParent().getHeight() / 2 - getHeight() / 2;
+        int centroX = XInicial;
+        int centroY = YInicial;
         setLocation(centroX, centroY);
     }
 }
