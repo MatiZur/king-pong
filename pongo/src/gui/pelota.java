@@ -68,7 +68,7 @@ public class pelota extends JPanel {
     public void movimiento() {
         setLocation(getX() + velX, getY() + velY);	// para poner las coordenadas de la pelota
 
-        if (getY() <= 236 || getY() >= 715) velY = -velY;	// colisiones del eje Y de la pelota 
+        if (getY() <= 224 || getY() >= 650) velY = -velY; // colisiones del eje Y de la pelota 
 
         if (getBounds().intersects(jugador1.getBounds())) 
         { 

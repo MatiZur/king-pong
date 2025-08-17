@@ -40,9 +40,8 @@ public class ventanaPong extends JFrame {
 
     public ventanaPong() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setExtendedState(JFrame.MAXIMIZED_BOTH);  // permite que la ventana sea fullscreen
+        setSize(1800,750);
         setLocationRelativeTo(null);
-        setResizable(false);
 
         // Pantalla de inicio
         pantallaInicio = new JPanel(null) {		// pantalla de inicio del jego
@@ -103,13 +102,9 @@ public class ventanaPong extends JFrame {
 
     private void iniciarJuego() {
     	
-        // Fondo inicial
-        
-    	int width = getWidth();  // Obtenemos el tamaño real del JFrame
-    	int height = getHeight();
     	
     	// para añadir el JPanel cancha a la pantalla
-    	cancha contentPane = new cancha(width, height);
+    	cancha contentPane = new cancha(1370, 710);
     	setContentPane(contentPane); 
     	
         // Cargar imágenes de marcador
@@ -121,7 +116,7 @@ public class ventanaPong extends JFrame {
         contentPane.add(marcadorIzq);
 
         marcadorDer = new JLabel(imagenesMarcador[0]);
-        marcadorDer.setBounds(1260, 400, 80, 110);
+        marcadorDer.setBounds(1255, 400, 80, 110);
         contentPane.add(marcadorDer);
 
         // sprite para la raqueta
@@ -149,13 +144,12 @@ public class ventanaPong extends JFrame {
         contentPane.add(jugador1);
 
         jugador2 = new JLabel(new ImageIcon(invertida));
-        jugador2.setBounds(1182, 350, spriteJugador.getIconWidth(), spriteJugador.getIconHeight());
+        jugador2.setBounds(1170, 350, spriteJugador.getIconWidth(), spriteJugador.getIconHeight());
         contentPane.add(jugador2);
 
         // Pelota
-        bocha = new pelota(width / 2 - 6, 480, jugador1, jugador2, this);
+        bocha = new pelota(678, 435, jugador1, jugador2, this);
         bocha.setBackground(Color.BLACK);
-        bocha.setBounds(width / 2 - 6, 480, 20, 20);
         contentPane.add(bocha);
         
         // Timer para iniciar el movimiento de la pelota
@@ -290,3 +284,5 @@ public class ventanaPong extends JFrame {
     }
 
 }
+
+	
