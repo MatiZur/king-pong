@@ -24,6 +24,7 @@ public class ventanaPong extends JFrame {
     private final int velRaqueta = 10;
     
     private Timer timer;
+    private javax.swing.Timer movimientoTimer;
     
     private pelota bocha;
     
@@ -178,7 +179,7 @@ public class ventanaPong extends JFrame {
         });
 
         // Movimiento de jugadores
-        javax.swing.Timer movimientoTimer = new javax.swing.Timer(26, e -> {
+        movimientoTimer = new javax.swing.Timer(26, e -> {
             int limiteSuperior = 235;
             int limiteInferior = contentPane.getHeight() - jugador1.getHeight();
 
@@ -245,6 +246,7 @@ public class ventanaPong extends JFrame {
         if (puntosIzq == 7)
         {
         	timer.cancel();
+        	movimientoTimer.stop();
         	Timer Timer = new Timer();
             TimerTask task = new TimerTask() {
                 public void run() {
@@ -264,6 +266,7 @@ public class ventanaPong extends JFrame {
         if (puntosDer == 7)
         {
         	timer.cancel();
+        	movimientoTimer.stop();
         	Timer Timer = new Timer();
             TimerTask task = new TimerTask() {
                 public void run() {
