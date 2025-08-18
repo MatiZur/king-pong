@@ -260,7 +260,7 @@ public class ventanaPong extends JFrame {
     public void sumarPuntoDer() {
         puntosDer++;
         if (puntosDer > 7) puntosDer = 7;
-        if (puntosIzq == 7)
+        if (puntosDer == 7)
         {
         	timer.cancel();
         	Timer Timer = new Timer();
